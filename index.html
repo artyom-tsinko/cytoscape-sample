@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Cytoscape custom node sample</title>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.2.5/cytoscape.js"></script>
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/cytoscape-popper/cytoscape-popper.js"></script>
+    
+    <style>
+        body { 
+            font: 14px helvetica neue, helvetica, arial, sans-serif;
+        }
+
+        #cy {
+            height: 500px;
+            width: 500px;
+            margin: auto;
+            border: 1px solid #CCC;
+            
+            margin-top:200px;
+        }
+
+        .popper-div { /* just an example */
+			z-index: 9999;
+			padding: 0.25em;
+			pointer-events: none;
+            position: relative;
+            left:-125px;
+            top:-170px;
+		}
+
+        .popper-div .title { color: #FFC927; font-weight: bold; font-size: 36px;}
+        .popper-div .department { color: #C4C4C4; font-weight: normal; font-size: 24px;}
+
+    </style>
+</head>
+<body>
+
+    <div id="cy"></div>
+    <script lang="javascript">
+        (function(){
+            var cy = window.cy = cytoscape(
+            {
+                container: document.getElementById('cy'),
+
+                boxSelectionEnabled: false,
+
+                layout: {
+                    name: 'preset'
+                },
+
+                style: [
+                    {
+                        selector: 'node',
+                        css: {
+                            'content': '',
+                            'text-valign': 'center',
+                            'text-halign': 'center',
+                            'width': 170,
+                            'height': 170,
+                            'shape': 'rectangle',
+                            'background-image': [
+                                'fold.svg',
+                                'bird.svg'
+                            ],
+                            'background-color': 'red', // does not matter
+                            'background-opacity': 0,
+                            'background-clip':'none',
+                            'background-width':[152, 152],
+                            'background-height':[142, 138],
+                            'background-position-x':[0,15],
+                            'background-position-y':[15,0],
+                        }
+                    }
+                ],
+
+                elements: {
+                    nodes: [
+                        { data: { id: 'a', parent: 'b' }, position: { x: 0, y: 0 } },
+                    ],
+                    edges: [
+                    ]
+                },
+
+                layout: {
+                    name: 'preset',
+                    padding: 5
+                }
+            });
+
+
+            var a = cy.getElementById('a');
+
+			var makeDiv = function(text){
+				var div = document.createElement('div');
+
+                div.classList.add('popper-div');
+                div.innerHTML = text;
+
+                var outerDiv = document.createElement('div');
+                outerDiv.appendChild(div);
+
+				
+
+				document.body.appendChild(outerDiv);
+
+				return outerDiv;
+			};
+
+			var popperA = a.popper({
+                // renderedPosition: () => ({ x:-150, y: -100 }),
+                content: function(){ return makeDiv('<span class="title">WordPress<br />Developer</span><br /><span class="department">Marketing</span>'); },
+                // popper: { placement: 'left-end' } // my popper options here
+			});
+
+			var updateA = function(){
+				popperA.update();
+			};
+
+			a.on('position', updateA);
+			cy.on('pan zoom resize', updateA);
+
+        })();
+
+
+    </script>
+</body>
+</html>
