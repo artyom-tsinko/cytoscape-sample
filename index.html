@@ -162,9 +162,9 @@
                 console.log(`Clicked or tapped on node ${nodeData.title.positionLine1}`);
             });
 
-            cy.userZoomingEnabled(false);
+            cy.userZoomingEnabled(false); // can not zoom
             cy.autoungrabify(true); // can not drag nodes
-            cy.userPanningEnabled(false);
+            cy.userPanningEnabled(false); // can not drag graph
             
             var graphColsCount = 6;
             var graphRowsCount = 3;
