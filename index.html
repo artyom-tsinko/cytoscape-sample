@@ -7,25 +7,36 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.2.5/cytoscape.js"></script>
     
     <style>
+        html, body{
+            height: 100%; overflow: hidden;
+        }
 
         body { 
             font: 14px helvetica neue, helvetica, arial, sans-serif;
         }
 
         #cy {
-            height: 800px;
-            width: 800px;
-            margin: auto;
+            height: 100%;
+            width: 100%;
+            visibility: hidden;
+        }
+
+        #wrapper {
             border: 1px solid #CCC;
-            
-            margin-top:100px;
+            width: 100%;
+            height: 70%;
+            overflow: hidden auto;
+            position:relative;
+            top:20%;
         }
 
     </style>
 </head>
 <body>
-
-    <div id="cy"></div>
+    <div id="wrapper">
+        <div id="cy"></div>
+    </div>
+    
     <script lang="javascript">
         (function(){
 
@@ -36,18 +47,48 @@
                         },
 
                         { 
+                            data: { id: '3', back: 'fold.svg', bird: 'bird.svg', title: { positionLine1: "", positionLine2:"CTO/CIO", department:"Assholes" } }, 
+                            position: { x: 0, y: 200 }
+                        },
+                        
+                        { 
                             data: { id: '2', back: 'fold.svg', bird: 'bird.svg', title: { positionLine1: ".NET", positionLine2:"Developer", department:"Software" } }, 
                             position: { x: 200, y: 200 }
                         },
 
                         { 
-                            data: { id: '3', back: 'fold.svg', bird: 'bird.svg', title: { positionLine1: "", positionLine2:"CTO/CIO", department:"Assholes" } }, 
-                            position: { x: 0, y: 200 }
+                            data: { id: '4', back: 'fold.svg', bird: 'bird.svg', title: { positionLine1: "Scala", positionLine2:"Junior Dev", department:"Software" } }, 
+                            position: { x: 200, y: 0 }
                         },
 
                         { 
-                            data: { id: '4', back: 'fold.svg', bird: 'bird.svg', title: { positionLine1: "Scala", positionLine2:"Junior Dev", department:"Software" } }, 
-                            position: { x: 200, y: 0 }
+                            data: { id: '5', back: 'fold.svg', bird: 'bird.svg', title: { positionLine1: "", positionLine2:"CHMO", department:"Assholes" } }, 
+                            position: { x: 0, y: 400 }
+                        },
+
+                        { 
+                            data: { id: '6', back: 'fold.svg', bird: 'bird.svg', title: { positionLine1: "C#/.NET", positionLine2:"Middle Dev", department:"Software" } }, 
+                            position: { x: 200, y: 400 }
+                        },
+
+                        { 
+                            data: { id: 'h7', back: 'fold.svg', bird: 'bird.svg', title: { positionLine1: "", positionLine2:"CHMO", department:"Assholes" } }, 
+                            position: { x: 400, y: 0 }
+                        },
+
+                        { 
+                            data: { id: 'h8', back: 'fold.svg', bird: 'bird.svg', title: { positionLine1: "C#/.NET", positionLine2:"Middle Dev", department:"Software" } }, 
+                            position: { x: 600, y: 0 }
+                        },
+
+                        { 
+                            data: { id: 'h9', back: 'fold.svg', bird: 'bird.svg', title: { positionLine1: "", positionLine2:"CHMO", department:"Assholes" } }, 
+                            position: { x: 800, y: 0 }
+                        },
+
+                        { 
+                            data: { id: 'h10', back: 'fold.svg', bird: 'bird.svg', title: { positionLine1: "C#/.NET", positionLine2:"Middle Dev", department:"Software" } }, 
+                            position: { x: 1000, y: 0 }
                         }
                     ];
             
@@ -120,6 +161,36 @@
                 var nodeData = node.data();
                 console.log(`Clicked or tapped on node ${nodeData.title.positionLine1}`);
             });
+
+            cy.userZoomingEnabled(false);
+            cy.autoungrabify(true); // can not drag nodes
+            cy.userPanningEnabled(false);
+            
+            var graphColsCount = 6;
+            var graphRowsCount = 3;
+            var graphBounds = { width: 200 * graphColsCount, height: 200 * graphRowsCount };
+            
+            var fitTimeout = null;
+            window.onresize = function(){ 
+
+                var w = document.getElementById("wrapper");
+                var actualWidth = w.offsetWidth;
+                var actualHeight = (actualWidth / graphBounds.width) * graphBounds.height;
+
+                var container = cy.container();
+                container.style.width = (Math.ceil(actualWidth)) + "px";
+                container.style.height = (Math.ceil(actualHeight)) + "px";
+
+                if (fitTimeout) { window.clearTimeout(fitTimeout); };
+                fitTimeout = setTimeout(function(){ cy.fit(); }, 500)
+
+            };
+            
+            window.onresize();
+
+            setTimeout(function(){ 
+                cy.container().style.visibility = "visible";
+            }, 500);
 
         })();
 
