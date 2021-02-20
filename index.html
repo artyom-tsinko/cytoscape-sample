@@ -23,73 +23,151 @@
 
         #wrapper {
             border: 1px solid #CCC;
-            width: 100%;
+            margin: auto;
+            width: 50%;
             height: 70%;
-            overflow: hidden auto;
+            overflow: auto;
             position:relative;
             top:20%;
         }
-
+        
     </style>
 </head>
 <body>
+    
     <div id="wrapper">
         <div id="cy"></div>
     </div>
     
+
+    <script>
+        // init cytoscape canvas scroll via d'n'd
+        (function(){
+            document.addEventListener(
+                'DOMContentLoaded', 
+                function() {
+                const ele = document.getElementById('wrapper');
+                ele.style.cursor = 'grab';
+            
+                let pos = { top: 0, left: 0, x: 0, y: 0 };
+            
+                const mouseDownHandler = function(e) {
+                    ele.style.cursor = 'grabbing';
+                    ele.style.userSelect = 'none';
+            
+                    pos = {
+                        left: ele.scrollLeft,
+                        top: ele.scrollTop,
+                        // Get the current mouse position
+                        x: e.clientX,
+                        y: e.clientY,
+                    };
+            
+                    document.addEventListener('mousemove', mouseMoveHandler);
+                    document.addEventListener('mouseup', mouseUpHandler);
+                };
+            
+                const mouseMoveHandler = function(e) {
+                    // How far the mouse has been moved
+                    const dx = e.clientX - pos.x;
+                    const dy = e.clientY - pos.y;
+            
+                    // Scroll the element
+                    ele.scrollTop = pos.top - dy;
+                    ele.scrollLeft = pos.left - dx;
+                };
+            
+                const mouseUpHandler = function() {
+                    ele.style.cursor = 'grab';
+                    ele.style.removeProperty('user-select');
+            
+                    document.removeEventListener('mousemove', mouseMoveHandler);
+                    document.removeEventListener('mouseup', mouseUpHandler);
+                };
+            
+                // Attach the handler
+                ele.addEventListener('mousedown', mouseDownHandler);
+                });
+        })();
+        
+    </script>
+
+
     <script lang="javascript">
+        // init cytoscape
         (function(){
 
             var nodes = [
                         { 
-                            data: { id: '1', back: 'fold.svg', bird: 'bird.svg', title: { positionLine1: "WordPress", positionLine2:"Developer", department:"Marketing" } },
+                            data: { id: '1', back: 'fold.svg', bird: 'bird.svg', title: { positionLine1: "1 WordPress", positionLine2:"Developer", department:"Marketing" } },
                             position: { x: 0, y: 0 }
                         },
 
                         { 
-                            data: { id: '3', back: 'fold.svg', bird: 'bird.svg', title: { positionLine1: "", positionLine2:"CTO/CIO", department:"Assholes" } }, 
+                            data: { id: '3', back: 'fold.svg', bird: 'bird.svg', title: { positionLine1: "2", positionLine2:"CTO/CIO", department:"Assholes" } }, 
                             position: { x: 0, y: 200 }
                         },
                         
                         { 
-                            data: { id: '2', back: 'fold.svg', bird: 'bird.svg', title: { positionLine1: ".NET", positionLine2:"Developer", department:"Software" } }, 
+                            data: { id: '2', back: 'fold.svg', bird: 'bird.svg', title: { positionLine1: "3 .NET", positionLine2:"Developer", department:"Software" } }, 
                             position: { x: 200, y: 200 }
                         },
 
                         { 
-                            data: { id: '4', back: 'fold.svg', bird: 'bird.svg', title: { positionLine1: "Scala", positionLine2:"Junior Dev", department:"Software" } }, 
+                            data: { id: '4', back: 'fold.svg', bird: 'bird.svg', title: { positionLine1: "4 Scala", positionLine2:"Junior Dev", department:"Software" } }, 
                             position: { x: 200, y: 0 }
                         },
 
                         { 
-                            data: { id: '5', back: 'fold.svg', bird: 'bird.svg', title: { positionLine1: "", positionLine2:"CHMO", department:"Assholes" } }, 
+                            data: { id: '5', back: 'fold.svg', bird: 'bird.svg', title: { positionLine1: "5", positionLine2:"CHMO", department:"Assholes" } }, 
                             position: { x: 0, y: 400 }
                         },
 
                         { 
-                            data: { id: '6', back: 'fold.svg', bird: 'bird.svg', title: { positionLine1: "C#/.NET", positionLine2:"Middle Dev", department:"Software" } }, 
+                            data: { id: '6', back: 'fold.svg', bird: 'bird.svg', title: { positionLine1: "6 C#/.NET", positionLine2:"Middle Dev", department:"Software" } }, 
                             position: { x: 200, y: 400 }
                         },
 
                         { 
-                            data: { id: 'h7', back: 'fold.svg', bird: 'bird.svg', title: { positionLine1: "", positionLine2:"CHMO", department:"Assholes" } }, 
+                            data: { id: 'h7', back: 'fold.svg', bird: 'bird.svg', title: { positionLine1: "7", positionLine2:"CHMO", department:"Assholes" } }, 
                             position: { x: 400, y: 0 }
                         },
 
                         { 
-                            data: { id: 'h8', back: 'fold.svg', bird: 'bird.svg', title: { positionLine1: "C#/.NET", positionLine2:"Middle Dev", department:"Software" } }, 
+                            data: { id: 'h8', back: 'fold.svg', bird: 'bird.svg', title: { positionLine1: "8 C#/.NET", positionLine2:"Middle Dev", department:"Software" } }, 
                             position: { x: 600, y: 0 }
                         },
-
+                        
                         { 
-                            data: { id: 'h9', back: 'fold.svg', bird: 'bird.svg', title: { positionLine1: "", positionLine2:"CHMO", department:"Assholes" } }, 
+                            data: { id: 'h9', back: 'fold.svg', bird: 'bird.svg', title: { positionLine1: "9", positionLine2:"CHMO", department:"Assholes" } }, 
                             position: { x: 800, y: 0 }
                         },
 
                         { 
-                            data: { id: 'h10', back: 'fold.svg', bird: 'bird.svg', title: { positionLine1: "C#/.NET", positionLine2:"Middle Dev", department:"Software" } }, 
+                            data: { id: 'h10', back: 'fold.svg', bird: 'bird.svg', title: { positionLine1: "10 C#/.NET", positionLine2:"Middle Dev", department:"Software" } }, 
                             position: { x: 1000, y: 0 }
+                        },
+
+                        { 
+                            data: { id: 'h11', back: 'fold.svg', bird: 'bird.svg', title: { positionLine1: "11", positionLine2:"CHMO", department:"Assholes" } }, 
+                            position: { x: 1200, y: 0 }
+                        },
+
+                        { 
+                            data: { id: 'h12', back: 'fold.svg', bird: 'bird.svg', title: { positionLine1: "12 C#/.NET", positionLine2:"Middle Dev", department:"Software" } }, 
+                            position: { x: 1400, y: 0 }
+                        },
+
+                        { 
+                            data: { id: 'h13', back: 'fold.svg', bird: 'bird.svg', title: { positionLine1: "13", positionLine2:"CHMO", department:"Assholes" } }, 
+                            position: { x: 1600, y: 0 }
+                        },
+
+                        { 
+                            data: { id: 'h14', back: 'fold.svg', bird: 'bird.svg', title: { positionLine1: "14 C#/.NET", positionLine2:"Middle Dev", department:"Software" } }, 
+                            position: { x: 1800, y: 0 }
                         }
+
                     ];
             
 
@@ -155,42 +233,42 @@
                 }
             });
 
+            // on click / tap handler
             cy.on('tap', 'node', function(evt){
                 var node = evt.target;
                 // node data sample
                 var nodeData = node.data();
                 console.log(`Clicked or tapped on node ${nodeData.title.positionLine1}`);
             });
-
+            
+            // disable odd UI functionality
             cy.userZoomingEnabled(false); // can not zoom
             cy.autoungrabify(true); // can not drag nodes
             cy.userPanningEnabled(false); // can not drag graph
             
-            var graphColsCount = 6;
+            // set canvas element size based on desirable graph size
+            var graphColsCount = 10;
             var graphRowsCount = 3;
-            var graphBounds = { width: 200 * graphColsCount, height: 200 * graphRowsCount };
+            var graphBounds = { width: 250 * graphColsCount, height: 250 * graphRowsCount };
             
-            var fitTimeout = null;
-            window.onresize = function(){ 
+            function resize(){
 
-                var w = document.getElementById("wrapper");
-                var actualWidth = w.offsetWidth;
-                var actualHeight = (actualWidth / graphBounds.width) * graphBounds.height;
+                var actualWidth = graphBounds.width;
+                var actualHeight = graphBounds.height;
 
                 var container = cy.container();
+
                 container.style.width = (Math.ceil(actualWidth)) + "px";
                 container.style.height = (Math.ceil(actualHeight)) + "px";
 
-                if (fitTimeout) { window.clearTimeout(fitTimeout); };
-                fitTimeout = setTimeout(function(){ cy.fit(); }, 500)
-
-            };
+                setTimeout(function() { 
+                    cy.fit();
+                    cy.container().style.visibility = "visible";
+                }, 500);
+                
+            }
             
-            window.onresize();
-
-            setTimeout(function(){ 
-                cy.container().style.visibility = "visible";
-            }, 500);
+            resize();
 
         })();
 
